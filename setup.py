@@ -1,12 +1,17 @@
 import sys
-from setuptools import setup, find_packages
+from distutils.core import setup
+import importlib.util
+import os
 
-sys.path[0:0] = ['stylegan2_pytorch']
-from version import __version__
+# Manually load version
+spec = importlib.util.spec_from_file_location("version", "stylegan2_pytorch/version.py")
+version_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(version_module)
+__version__ = version_module.__version__
 
 setup(
   name = 'stylegan2_pytorch',
-  packages = find_packages(),
+  packages = ['stylegan2_pytorch'],
   entry_points={
     'console_scripts': [
       'stylegan2_pytorch = stylegan2_pytorch.cli:main',
