@@ -30,7 +30,6 @@ setup(
     'artificial intelligence'
   ],
   install_requires=[
-    'aim',
     'einops>=0.8.0',
     'contrastive_learner>=0.1.0',
     'fire',

@@ -42,7 +42,6 @@ try:
 except:
     APEX_AVAILABLE = False
 
-import aim
 
 assert torch.cuda.is_available(), 'You need to have an Nvidia GPU with CUDA installed.'
 
@@ -895,8 +894,6 @@ class Trainer():
         self.is_main = rank == 0
         self.rank = rank
         self.world_size = world_size
-
-        self.logger = aim.Session(experiment=name) if log else None
 
     @property
     def image_extension(self):
