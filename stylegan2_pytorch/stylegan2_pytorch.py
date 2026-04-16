@@ -1060,7 +1060,7 @@ class Trainer():
             if apply_gradient_penalty:
                 gp = gradient_penalty(image_batch, real_output) + gradient_penalty(generated_images, fake_output)
                 self.last_gp_loss = gp.clone().detach().item()
-                self.track(self.last_gp_loss, 'GP')
+
                 disc_loss = disc_loss + gp
 
             disc_loss = disc_loss / self.gradient_accumulate_every
@@ -1070,7 +1070,6 @@ class Trainer():
             total_disc_loss += divergence.detach().item() / self.gradient_accumulate_every
 
         self.d_loss = float(total_disc_loss)
-        self.track(self.d_loss, 'D')
 
         self.GAN.D_opt.step()
 
@@ -1122,7 +1121,6 @@ class Trainer():
             total_gen_loss += loss.detach().item() / self.gradient_accumulate_every
 
         self.g_loss = float(total_gen_loss)
-        self.track(self.g_loss, 'G')
 
         self.GAN.G_opt.step()
 
@@ -1130,7 +1128,6 @@ class Trainer():
 
         if apply_path_penalty and not np.isnan(avg_pl_length):
             self.pl_mean = self.pl_length_ma.update_average(self.pl_mean, avg_pl_length)
-            self.track(self.pl_mean, 'PL')
 
         if self.is_main and self.steps % 10 == 0 and self.steps > 20000:
             self.GAN.EMA()
