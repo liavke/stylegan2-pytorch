@@ -918,9 +918,6 @@ class Trainer():
             self.D_ddp = DDP(self.GAN.D, **ddp_kwargs)
             self.D_aug_ddp = DDP(self.GAN.D_aug, **ddp_kwargs)
 
-        if exists(self.logger):
-            self.logger.set_params(self.hparams)
-
     def write_config(self):
         self.config_path.write_text(json.dumps(self.config()))
 
@@ -1344,11 +1341,6 @@ class Trainer():
         data = [d for d in data if exists(d[1])]
         log = ' | '.join(map(lambda n: f'{n[0]}: {n[1]:.2f}', data))
         print(log)
-
-    def track(self, value, name):
-        if not exists(self.logger):
-            return
-        self.logger.track(value, name = name)
 
     def model_name(self, num):
         return str(self.models_dir / self.name / f'model_{num}.pt')
